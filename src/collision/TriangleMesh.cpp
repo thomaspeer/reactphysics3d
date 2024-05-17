@@ -96,6 +96,47 @@ bool TriangleMesh::copyData(const TriangleVertexArray& triangleVertexArray, std:
 
     const decimal epsilonSquare = mEpsilon * mEpsilon;
 
+    //---TEMP TEST---
+    if (true)
+    {
+        mVertices.clear();
+        mVerticesNormals.clear();
+        mTriangles.clear();
+
+        const auto*    vertices   = reinterpret_cast<const Vector3*>(triangleVertexArray.getVerticesStart());
+        const auto*    normals   = reinterpret_cast<const Vector3*>(triangleVertexArray.getVerticesNormalsStart());
+        const auto*    indices    = reinterpret_cast<const uint32_t*>(triangleVertexArray.getIndicesStart());
+        const uint32_t numIndices = triangleVertexArray.getNbTriangles() * 3U;
+        mVertices.reserve(numIndices);
+        mVerticesNormals.reserve(numIndices);
+        mTriangles.reserve(numIndices);
+        for (uint32 i = 0; i < numIndices; i += 3U)
+        {
+            const auto index_0  = indices[i + 0U];
+            const auto index_1  = indices[i + 1U];
+            const auto index_2  = indices[i + 2U];
+            const auto vertex_0 = vertices[index_0];
+            const auto vertex_1 = vertices[index_1];
+            const auto vertex_2 = vertices[index_2];
+            const auto normal_0 = normals ? normals[index_0] : Vector3(0, 0, 1);
+            const auto normal_1 = normals ? normals[index_1] : Vector3(0, 0, 1);
+            const auto normal_2 = normals ? normals[index_2] : Vector3(0, 0, 1);
+            mVertices.add(vertex_2); // Flipped faces
+            mVertices.add(vertex_1); // Flipped faces
+            mVertices.add(vertex_0); // Flipped faces
+            mVerticesNormals.add(normal_2); // Flipped faces
+            mVerticesNormals.add(normal_1); // Flipped faces
+            mVerticesNormals.add(normal_0); // Flipped faces
+            mTriangles.add(i + 0U);
+            mTriangles.add(i + 1U);
+            mTriangles.add(i + 2U);
+        }
+        assert(mTriangles.size() > 0U);
+        assert(mTriangles.size() % 3U == 0U);
+        return isValid;
+    }
+    //---
+
     Array<bool> areUserVerticesUsed(mAllocator);
     for (uint32 i=0 ; i < triangleVertexArray.getNbVertices(); i++) {
        areUserVerticesUsed.add(false);
