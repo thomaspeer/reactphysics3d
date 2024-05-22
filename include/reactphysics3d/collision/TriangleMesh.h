@@ -143,12 +143,12 @@ class TriangleMesh {
 
 // Return the number of vertices in the mesh
 RP3D_FORCE_INLINE uint32 TriangleMesh::getNbVertices() const {
-    return mVertices.size();
+    return (uint32_t)mVertices.size();
 }
 
 // Return the number of triangles faces of the mesh
 RP3D_FORCE_INLINE uint32 TriangleMesh::getNbTriangles() const {
-    return mTriangles.size() / 3;
+    return (uint32_t)mTriangles.size() / 3;
 }
 
 // Return the three vertex indices of a given triangle face

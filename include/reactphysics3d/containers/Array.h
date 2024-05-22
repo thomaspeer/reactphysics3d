@@ -252,7 +252,7 @@ class Array {
             if (capacity <= mCapacity) return;
 
             // Make sure capacity is an integral multiple of alignment
-            capacity = std::ceil(capacity / float(GLOBAL_ALIGNMENT)) * GLOBAL_ALIGNMENT;
+            capacity = (uint64_t)std::ceil(capacity / float(GLOBAL_ALIGNMENT)) * GLOBAL_ALIGNMENT;
 
             // Allocate memory for the new array
             void* newMemory = mAllocator.allocate(capacity * sizeof(T));
